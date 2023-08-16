@@ -4,19 +4,50 @@ import { useState } from 'react'
 
 interface Props {
   tiles: TileData[]
-  evalMatch: () => void
+  evalMatch: (match: boolean) => void
 }
 
 function Board(props: Props) {
   const [firstTileId, setFirstTileId] = useState(-1)
+  const [secondTileId, setSecondTileId] = useState(-1)
+  const [isMatching, setIsMatching] = useState(false)
 
   function findTile(id: number): void {
-    console.log('clicked')
-    const tile = props.tiles.filter((tile) => tile.id === id)[0]
-    tile.isVisible = true
-    console.log(tile)
-    setFirstTileId(id)
+    if (isMatching) {
+      return
+    }
+
+    const currentTile = findTileById(id)
+    currentTile.isVisible = true
+
+    if (firstTileId < 0) {
+      setFirstTileId(id)
+    } else {
+      setSecondTileId(id)
+      setIsMatching(true)
+      const prevTile = findTileById(firstTileId)
+      const isMatch = currentTile.value === prevTile.value
+      props.evalMatch(isMatch)
+      if (isMatch) {
+        setFirstTileId(-1)
+        setSecondTileId(-1)
+        setIsMatching(false)
+      } else {
+        setTimeout(() => {
+          currentTile.isVisible = false
+          prevTile.isVisible = false
+          setFirstTileId(-1)
+          setSecondTileId(-1)
+          setIsMatching(false)
+        }, 1000)
+      }
+    }
   }
+
+  function findTileById(id: number): TileData {
+    return props.tiles.filter((tile) => tile.id === id)[0]
+  }
+
   return (
     <div className="tiles" data-testid="Board">
       {props.tiles.map((tile) => {
