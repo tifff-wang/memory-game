@@ -8,19 +8,25 @@ const winMessage = 'Congratulations, you matched all the tiles!'
 function App() {
   const [isMatch, setIsMatch] = useState(false)
   const [matchCount, setMatchCount] = useState(0)
-
-  const hasWon = matchCount === startingTiles.length / 2
-
-  const reset = () => {}
+  const [hasWon, setHasWon] = useState(false)
 
   const evalMatch = (isMatch: boolean) => {
     setIsMatch(isMatch)
+    if (isMatch) {
+      setMatchCount(matchCount + 1)
+      setHasWon(matchCount === startingTiles.length / 2 - 1)
+    }
+  }
+
+  const reset = () => {
+    console.log(startingTiles)
+    startingTiles.map((tile) => (tile.isVisible = false))
+    console.log(startingTiles)
   }
 
   return (
     <div className="game">
       <h1>Welcome to the Memory Game</h1>
-      <h2>Match all the tiles to win</h2>
 
       <Board tiles={startingTiles} evalMatch={evalMatch} />
 
