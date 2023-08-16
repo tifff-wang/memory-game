@@ -1,5 +1,6 @@
 import Tile from './Tile.tsx'
 import { TileData } from '../startingTiles.ts'
+import { useState } from 'react'
 
 interface Props {
   tiles: TileData[]
@@ -15,7 +16,7 @@ function Board(props: Props) {
             id={tile.id}
             key={tile.id}
             info={tile.info}
-            value={tile.value}
+            value={tile.isVisible == true ? tile.value : ''}
             isVisible={tile.isVisible}
           />
         )
