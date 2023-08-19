@@ -11,6 +11,7 @@ function Board(props: Props) {
   const [firstTileId, setFirstTileId] = useState(-1)
   const [secondTileId, setSecondTileId] = useState(-1)
   const [isMatching, setIsMatching] = useState(false)
+  const [allTiles, setAllTiles] = useState(props.tiles)
 
   function findTile(id: number): void {
     if (isMatching) {
@@ -45,12 +46,12 @@ function Board(props: Props) {
   }
 
   function findTileById(id: number): TileData {
-    return props.tiles.filter((tile) => tile.id === id)[0]
+    return allTiles.filter((tile) => tile.id === id)[0]
   }
 
   return (
     <div className="tiles" data-testid="Board">
-      {props.tiles.map((tile) => {
+      {allTiles.map((tile) => {
         return (
           <Tile
             id={tile.id}

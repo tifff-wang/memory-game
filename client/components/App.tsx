@@ -9,6 +9,7 @@ function App() {
   const [isMatch, setIsMatch] = useState(false)
   const [matchCount, setMatchCount] = useState(0)
   const [hasWon, setHasWon] = useState(false)
+  const [initialTiles, setInitialTiles] = useState(startingTiles)
 
   const evalMatch = (isMatch: boolean) => {
     setIsMatch(isMatch)
@@ -19,16 +20,15 @@ function App() {
   }
 
   const reset = () => {
-    console.log(startingTiles)
-    startingTiles.map((tile) => (tile.isVisible = false))
-    console.log(startingTiles)
+    startingTiles.forEach((tile) => (tile.isVisible = false))
+    setInitialTiles([...startingTiles])
   }
 
   return (
     <div className="game">
       <h1>Welcome to the Memory Game</h1>
 
-      <Board tiles={startingTiles} evalMatch={evalMatch} />
+      <Board tiles={initialTiles} evalMatch={evalMatch} />
 
       <h5>{hasWon && winMessage}</h5>
       <h5>{!isMatch && tryAgain}</h5>
